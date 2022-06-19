@@ -3,6 +3,13 @@
         "iostream": "cpp",
         "ostream": "cpp",
         "cmath": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "array": "cpp",
+        "fstream": "cpp",
+        "future": "cpp",
+        "shared_mutex": "cpp",
+        "sstream": "cpp",
+        "thread": "cpp",
+        "tuple": "cpp"
     }
 }
