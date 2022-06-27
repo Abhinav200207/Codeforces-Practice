@@ -1,80 +1,112 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void printtwovector(vector<vector<int>> v)
+// Returns true if str1 is smaller than str2,
+// else false.
+bool isSmaller(string str1, string str2)
 {
-    for (int i = 0; i < v.size(); i++)
+    // Calculate lengths of both string
+    long long int n1 = str1.length(), n2 = str2.length();
+
+    if (n1 < n2)
+        return true;
+    if (n2 < n1)
+        return false;
+
+    for (long long int i = 0; i < n1; i++)
     {
-        for (int j = 0; j < v[i].size(); j++)
-        {
-            cout << v[i][j] << " ";
-        }
-        cout << endl;
+        if (str1[i] < str2[i])
+            return true;
+        else if (str1[i] > str2[i])
+            return false;
     }
+    return false;
+}
+
+// Function for finding difference of larger numbers
+string findDiff(string str1, string str2)
+{
+    if (isSmaller(str1, str2))
+        swap(str1, str2);
+    string str = "";
+
+    // Calculate lengths of both string
+    long long int n1 = str1.length(), n2 = str2.length();
+    long long int diff = n1 - n2;
+
+    // Initially take carry zero
+    long long int carry = 0;
+
+    // Traverse from end of both strings
+    for (long long int i = n2 - 1; i >= 0; i--)
+    {
+        // Do school mathematics, compute difference of
+        // current digits and carry
+        long long int sub = ((str1[i + diff] - '0') - (str2[i] - '0') - carry);
+        if (sub < 0)
+        {
+            sub = sub + 10;
+            carry = 1;
+        }
+        else
+            carry = 0;
+
+        str.push_back(sub + '0');
+    }
+
+    // subtract remaining digits of str1[]
+    for (long long int i = n1 - n2 - 1; i >= 0; i--)
+    {
+        if (str1[i] == '0' && carry)
+        {
+            str.push_back('9');
+            continue;
+        }
+        long long int sub = ((str1[i] - '0') - carry);
+        if (i > 0 || sub > 0) // remove preceding 0's
+            str.push_back(sub + '0');
+        carry = 0;
+    }
+
+    // reverse resultant string
+    reverse(str.begin(), str.end());
+
+    return str;
 }
 
 int main()
 {
-    int t;
+    long long int t;
     cin >> t;
     while (t--)
     {
-        int n, m;
-        cin >> n >> m;
-        vector<vector<int>> v(n, vector<int>(m, 0));
-        for (int i = 0; i < n; i++)
+        long long int n;
+        cin >> n;
+        string s;
+        cin >> s;
+        vector<string> v;
+        for (long long int i = 1; i < 10; i++)
         {
-            for (int j = 0; j < m; j++)
+            string temp = "";
+            for (long long int j = 1; j <= n; j++)
             {
-                cin >> v[i][j];
+                temp += to_string(i);
             }
+            v.push_back(temp);
+            v.push_back(temp + to_string(i));
         }
-        vector<vector<int>> dp(n, vector<int>(m, 0));
-        dp[0][0] = v[0][0];
-        for (int i = 1; i < n; i++)
+        string ans = "";
+        for (auto i : v)
         {
-            dp[i][0] = dp[i - 1][0] + v[i][0];
-        }
-        for (int i = 1; i < m; i++)
-        {
-            dp[0][i] = dp[0][i - 1] + v[0][i];
-        }
-        for (int i = 1; i < n; i++)
-        {
-            for (int j = 1; j < m; j++)
+            if (isSmaller(s, i))
             {
-                if (v[i][j] == 1)
+                string x = findDiff(i, s);
+                if (x.length() == s.length())
                 {
-                    if (dp[i - 1][j] <= 0 && dp[i][j - 1] <= 0)
-                    {
-                        dp[i][j] = max(v[i][j] + dp[i - 1][j],v[i][j] + dp[i][j - 1]);
-                    }
-                    else
-                    {
-                        dp[i][j] = min(v[i][j] + dp[i - 1][j],v[i][j] + dp[i][j - 1]);
-                    }
-                }
-                else
-                {
-                    if (dp[i - 1][j] >= 0 && dp[i][j - 1] >= 0)
-                    {
-                        dp[i][j] = min(v[i][j] + dp[i - 1][j],v[i][j] + dp[i][j - 1]);
-                    }
-                    else
-                    {
-                        dp[i][j] = max(v[i][j] + dp[i - 1][j],v[i][j] + dp[i][j - 1]);
-                    }
+                    ans = x;
                 }
             }
         }
-        // printtwovector(dp);
-        if (dp[n - 1][m - 1] == 0)
-        {
-            cout << "YES" << endl;
-        }
-        else
-        {
-            cout << "NO" << endl;
-        }
+        cout << ans << endl;
     }
 }
