@@ -24,19 +24,39 @@ int main()
         vector<int> v2;
         for (int i = 1; i <= n / 2; i++)
         {
-            // cout << v[i] << " ";
             v1.push_back(v[i]);
         }
-        cout << endl;
         for (int i = n / 2 + 1; i <= n; i++)
         {
-            // cout << v[i] << " ";
             v2.push_back(v[i]);
         }
-        cout << endl;
+        vector<int> ans;
         for (int i = 0; i < v1.size(); i++)
         {
-            cout << v1[i] << " " << v2[i] << " ";
+            ans.push_back(v1[i]);
+            ans.push_back(v2[i]);
+        }
+        bool b = true;
+        for (int i = 1; i < n - 1; i += 2)
+        {
+            if (ans[i] > ans[i + 1] && ans[i] > ans[i - 1])
+            {
+                continue;
+            }
+            b = false;
+        }
+        if (!b)
+        {
+            cout << "NO" << endl;
+        }
+        else
+        {
+            cout << "YES" << endl;
+            for (int i = 0; i < n; i++)
+            {
+                cout << ans[i] << " ";
+            }
+            cout << endl;
         }
     }
 }
