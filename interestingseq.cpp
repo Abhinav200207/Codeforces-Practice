@@ -1,26 +1,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+long long int find_and(long long int l, long long int r)
+{
+    long long int shift = 0;
+    while (l != r)
+    {
+        l = l >> 1;
+        r = r >> 1;
+        shift++;
+    }
+    return (l << shift);
+}
 int main()
 {
     int t;
     cin >> t;
     while (t--)
     {
-        int n, m;
-        cin >> n >> m;
-        if (m % n == 0)
+        long long int n, x, ans = -1;
+        cin >> n >> x;
+
+        long long int left = n, right = 5e18;
+
+        while (left <= right)
         {
-            cout << "YES" << endl;
-            // int x = m/n;
-            for (int i = 0; i < n - 1; i++)
+            long long int mid = (left + right) / 2;
+            long long int bitwiseAND = find_and(n, mid);
+            if (bitwiseAND <= x)
             {
-                cout << 1 << " ";
+                if (bitwiseAND == x)
+                    ans = mid;
+                right = mid - 1;
             }
-            cout << m - (n - 1) << endl;
-        }else
-        {
-            cout << "NO" << endl;
+            else
+            {
+                left = mid + 1;
+            }
         }
+        cout << ans << endl;
     }
 }

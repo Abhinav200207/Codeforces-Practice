@@ -1,53 +1,57 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool isPalindrome(string S, int n)
+class Solution
 {
-    // cout << "aya tha yahan" << endl;
-    if (n == 1)
+public:
+    bool isItPossible(string word1, string word2)
     {
-        return false;
-    }
-    for (int i = 0; i < n / 2; i++)
-    {
-        if (S[i] != S[n - i - 1])
+        unordered_map<int, int> mp1, mp2;
+        for (auto i : word1)
+            mp1[i]++;
+        for (auto i : word2)
+            mp2[i]++;
+        for (auto i : mp1)
         {
-            return false;
-        }
-    }
-    return true;
-}
-
-void printSubstrings(string str, int n)
-{
-    for (int i = 0; i < n; i++)
-    {
-        string subStr = "";
-        for (int j = i; j < n; j++)
-        {
-            subStr += str[j];
-            // cout << subStr << endl;
-            if (isPalindrome(subStr, subStr.length()))
+            for (auto j : mp2)
             {
-                cout << "NO" << endl;
-                return;
+                if (mp1.find(i.first) != mp1.end() && mp2.find(j.first) != mp2.end())
+                {
+                    mp1[i.first]--;
+                    mp1[j.first]++;
+                    if (mp1[i.first] == 0)
+                    {
+                        mp1.erase(i.first);
+                    }
+
+                    mp2[i.first]++;
+                    mp2[j.first]--;
+                    if (mp2[j.first] == 0)
+                    {
+                        mp2.erase(j.first);
+                    }
+
+                    if (mp1.size() == mp2.size())
+                    {
+                        return 1;
+                    }
+
+                    mp1[i.first]++;
+                    mp1[j.first]--;
+                    if (mp1[j.first] == 0)
+                    {
+                        mp1.erase(j.first);
+                    }
+
+                    mp2[i.first]--;
+                    mp2[j.first]++;
+                    if (mp2[i.first] == 0)
+                    {
+                        mp2.erase(i.first);
+                    }
+                }
             }
         }
+        return 0;
     }
-    cout << "YES" << endl;
-    return;
-}
-
-int main()
-{
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        int n;
-        cin >> n;
-        string s;
-        cin >> s;
-        printSubstrings(s, n);
-    }
-}
+};
