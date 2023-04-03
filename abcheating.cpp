@@ -6,6 +6,7 @@
 #include <queue>
 #include <string>
 #include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 #define ll long long int
 #define fast_io                       \
@@ -110,13 +111,16 @@ class Solution
 public:
     void solveForInt(int t)
     {
-        int n;
+        vector<int> v(2);
+        // getInput(v, n);
+        unsigned long long int n;
         cin >> n;
-        vector<int> v(n);
-        getInput(v, n);
+        unsigned long long int abc = sqrtl(n - 1);
+        cout << abc << endl;
+
         // int addB = addBhai(10);
         // // cout << addB << endl;
-        // int subB = subBhai(10);
+        int subB = subBhai(3);
         // // cout << subB << endl;
     }
 

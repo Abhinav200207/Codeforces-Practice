@@ -1,0 +1,1 @@
+print("bcdefghijklmnopqrstuvwxya" == "bcdefghijklmnopqrstuvwxyaz")
